@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Sent Events with Shared Workers</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10%;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>messages:</h1>
+        <div id="messages"></div>
+    </section>
+    <section>
+        <h1>pings:</h1>
+        <div id="pings"></div>
+    </section>
+    <section>
+        <h1>pongs:</h1>
+        <div id="pongs"></div>
+    </section>
+<script>
+    const messageDiv = document.getElementById('messages');
+    const pingDiv = document.getElementById('pings');
+    const pongDiv = document.getElementById('pongs');
+
+    let eventSource = new EventSource('http://localhost:8000');
+    eventSource.onmessage = (event) => messageDiv.appendChild(createElement(event));
+    eventSource.addEventListener('ping', (event) => pingDiv.appendChild(createElement(event)));
+    eventSource.addEventListener('pong', (event) => pongDiv.appendChild(createElement(event)));
+
+    function createElement(event) {
+        const newElement = document.createElement('p');
+        newElement.innerText = event.data;
+        return newElement;
+    }
+</script>
+</body>
+</html>

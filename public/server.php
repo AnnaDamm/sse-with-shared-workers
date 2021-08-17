@@ -2,17 +2,24 @@
 
 declare(strict_types=1);
 
-header('Access-Control-Allow-Origin: *'); // only for example
+// only for example
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: *');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    die();
+}
 
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 
 ob_end_clean();
 
-$id = getallheaders()['Last-Event-Id'] ?? 0;
-$ping = (bool) $id % 2;
+$id = getallheaders()['Last-Event-ID'] ?? 0;
+$ping = (bool)$id % 2;
 
-while (true) {
+for ($i = 0; $i < 10; $i++) {
     $id++;
     $ping = !$ping;
     echo <<<TEXT
