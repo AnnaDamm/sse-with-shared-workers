@@ -6,7 +6,7 @@
     <style>
         body {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             grid-gap: 10%;
         }
     </style>
@@ -24,6 +24,10 @@
         <h1>pongs:</h1>
         <div id="pongs"></div>
     </section>
+    <section>
+        <h1>with lock:</h1>
+        <div id="lock"></div>
+    </section>
     <script>
         const divs = {
             message: document.getElementById('messages'),
@@ -32,12 +36,35 @@
         }
 
         const worker = new SharedWorker('shared.worker.js');
-        worker.port.onmessage = (event) => {
+        worker.port.addEventListener('message', (event) => {
             const div = divs[event.data.type];
             if (div === undefined) {
                 return;
             }
             div.appendChild(createElement(event.data));
+        });
+        // only working in Chrome (without local storage poly fill): only handle the message in one of the tabs
+        if (navigator.locks !== undefined) {
+            const lockDiv = document.getElementById('lock');
+
+            worker.port.addEventListener('message', (event) => {
+                if (event.data.type !== 'message') {
+                    return;
+                }
+                navigator.locks.request(event.data.data, {
+                    mode: 'exclusive',
+                    ifAvailable: true,
+                }, async (lock) => {
+                    if (!lock) {
+                        // could not aquire lock
+                        return;
+                    }
+                    await new Promise((resolve) => {
+                        lockDiv.appendChild(createElement(event.data));
+                        setTimeout(resolve, 10); // hold the lock instead of immediately releasing it
+                    })
+                })
+            });
         }
         worker.port.start();
 
