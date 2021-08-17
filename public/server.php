@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 // only for example
-set_time_limit(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: *');
@@ -15,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 
-ob_end_clean();
+ob_end_clean(); // directly send to the browser without buffering
 
 $id = getallheaders()['Last-Event-ID'] ?? 0;
 $ping = (bool)$id % 2;
@@ -23,6 +22,14 @@ $ping = (bool)$id % 2;
 for ($i = 0; $i < 10; $i++) {
     $id++;
     $ping = !$ping;
+
+    // there must be one empty line between messages.
+    // Messages look like this:
+    //
+    // [event: <event to listen to (default: "message")>]
+    // data: <text message>
+    // [id: <id>]
+    // <new line>
     echo <<<TEXT
         id: $id
         data: id: $id

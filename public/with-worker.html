@@ -25,14 +25,21 @@
         <div id="pongs"></div>
     </section>
     <script>
-        const messageDiv = document.getElementById('messages');
-        const pingDiv = document.getElementById('pings');
-        const pongDiv = document.getElementById('pongs');
+        const divs = {
+            message: document.getElementById('messages'),
+            ping: document.getElementById('pings'),
+            pong: document.getElementById('pongs'),
+        }
 
-        const eventSource = new EventSource('http://localhost:8000');
-        eventSource.onmessage = (event) => messageDiv.appendChild(createElement(event));
-        eventSource.addEventListener('ping', (event) => pingDiv.appendChild(createElement(event)));
-        eventSource.addEventListener('pong', (event) => pongDiv.appendChild(createElement(event)));
+        const worker = new SharedWorker('shared.worker.js');
+        worker.port.onmessage = (event) => {
+            const div = divs[event.data.type];
+            if (div === undefined) {
+                return;
+            }
+            div.appendChild(createElement(event.data));
+        }
+        worker.port.start();
 
         function createElement(event) {
             const newElement = document.createElement('p');
