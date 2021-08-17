@@ -1,7 +1,7 @@
 This is an example on how Server Sent events can be used together with Shared workers to reduce connections.
 
 # Prerequisites
-* PHP 8
+* PHP >= 7.3
 
 # Usage
 To start the server:
