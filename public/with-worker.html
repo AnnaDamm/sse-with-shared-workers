@@ -35,7 +35,9 @@
             pong: document.getElementById('pongs'),
         }
 
-        const worker = new SharedWorker('shared.worker.js');
+        const worker = new SharedWorker('shared.worker.js', {
+            name: 'shared-worker-example',
+        });
         worker.port.addEventListener('message', (event) => {
             const div = divs[event.data.type];
             if (div === undefined) {
