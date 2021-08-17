@@ -1,5 +1,6 @@
 {
   "name": "anna.damm/sse-with-shared-workers",
+  "homepage": "https://github.com/AnnaDamm/sse-with-shared-workers",
   "description": "An example project of using Server Sent Events with Shared Workers",
   "type": "project",
   "license": "MIT",
