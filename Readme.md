@@ -14,3 +14,8 @@ To use a worker, you need some sort of webserver (nginx, apache) when opening th
 the browser cannot load the worker file directly from the file system.
 
 It is also possible to use PHPStorm's "Open in: Browser" feature to open the HTML file.
+
+# Debug shared worker
+In chrome, open: [chrome://inspect/#workers](chrome://inspect/#workers) and click on `inspect` of the service worker
+
+In Firefox, open: [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox) and click on `Inspect` of the service worker
