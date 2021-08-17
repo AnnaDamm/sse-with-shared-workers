@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 // only for example
+set_time_limit(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: *');
