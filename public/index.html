@@ -3,8 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Server Sent Events with Shared Workers</title>
+    <style>
+        body {
+            display: grid;
+        }
+    </style>
 </head>
 <body>
+    <section>
+        <h1>messages:</h1>
+        <div id="messages"></div>
+    </section>
+    <section>
+        <h1>pings:</h1>
+        <div id="pings"></div>
+    </section>
+<script>
+    const messageDiv = document.getElementById('messages');
+    const pingDiv = document.getElementById('pings');
 
+    let eventSource = new EventSource('localhost:8000');
+    eventSource.onmessage
+</script>
 </body>
 </html>
